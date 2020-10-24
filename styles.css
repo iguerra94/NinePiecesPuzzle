@@ -133,3 +133,22 @@ h1 {
   font-size: .9rem;
   color: #333;
 }
+
+.game-finished {
+  position: absolute;
+  width: 158%;
+  height: 110%;
+  border: 2px solid red;
+}
+
+.game-finished__text {
+  position: absolute;
+  font-size: .9rem;
+  font-weight: 500;
+  width: 150%;
+  height: 110%;
+  top: -30px;
+
+  display: flex;
+  justify-content: flex-end;
+}

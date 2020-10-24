@@ -80,11 +80,24 @@ function dibujarSiguienteEstado(nextState) {
   let nsValuesHTML = ``;
   nextState.stateValues.forEach((value) => nsValuesHTML += (value !== -1) ? `<div class="pieza">${value}</div>` : `<div class="pieza"></div>`);
 
-  window.curstatePuzzle.innerHTML = `
-    ${nsValuesHTML}
+  const nextStateDm = nextState.dm;
 
-    <p class="dm-right">DM = ${nextState.dm}</p>
-  `;
+  if (nextStateDm > 0) {
+    window.curstatePuzzle.innerHTML = `
+      ${nsValuesHTML}
+
+      <p class="dm-right">DM = ${nextState.dm}</p>
+    `;
+  } else {
+    window.curstatePuzzle.innerHTML = `
+      <div class="game-finished"></div>
+      <span class="game-finished__text">Resultado Final</span>
+
+      ${nsValuesHTML}
+
+      <p class="dm-right">DM = ${nextState.dm}</p>
+    `;
+  }
 }
 
 function establecerEstadoActual(nextState) {

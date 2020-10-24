@@ -1,3 +1,5 @@
+import { sha256 } from './crypto-utils.js';
+
 class PieceCoords {
   constructor(x,y) {
     this.x = x;
@@ -114,9 +116,11 @@ class Game {
 
       const stateHash = this.hashPath(newState.stateValues);
 
-      this.addPath(stateHash);
-      nextStates.push(newState);
-      manhDists.push({ idx: manhDists.length, value: newState.calcularManhDist(gs) });
+      if (!this.pathExists(stateHash)) {
+        this.addPath(stateHash);
+        nextStates.push(newState);
+        manhDists.push({ idx: manhDists.length, value: newState.calcularManhDist(gs) });
+      }
     });
 
     const minDm = Math.min(...manhDists.map(dm => dm.value));
@@ -129,8 +133,6 @@ class Game {
       }
     });
 
-    console.log(nextStates)
-
     return nextStates;
   }
 
@@ -139,16 +141,16 @@ class Game {
     return this.state.getPiece(idx);
   }
 
-  async hashPath(stateValues) {
-    const msgUint8 = new TextEncoder().encode(stateValues.toString());   // encode as (utf-8) Uint8Array
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);  // hash the message
-    const hashArray = Array.from(new Uint8Array(hashBuffer));            // convert buffer to byte array
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+  hashPath(stateValues) {
+    return sha256(stateValues);
   }
 
-  async addPath(path) {
-    const _path = await path;
-    this.exploredPaths.push(_path);
+  addPath(path) {
+    this.exploredPaths.push(path);
+  }
+
+  pathExists(path) {
+    return this.exploredPaths.includes(path);
   }
 }
 
