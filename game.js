@@ -1,3 +1,4 @@
+import { create_UUID } from './utils.js';
 import { sha256 } from './crypto-utils.js';
 
 class PieceCoords {
@@ -17,10 +18,15 @@ class Piece {
 }
 
 class State {
-  constructor(stateValues = [], dm = 0) {
+  constructor(stateValues = []) {
+    this.uuid = create_UUID();
+    this.predecessor = "";
     this.state = stateValues.map((val, idx) => new Piece(idx, this.pieceCoords[idx], val, this.PieceAvailableMoves[idx]));
     this.selected = false;
-    this.dm = dm;
+    this.lastSelected = false;
+    this.depthLevel = 0;
+    this.dm = 0;
+    this.f = 0;
   }
 
   getPiece(idx) {
@@ -57,9 +63,9 @@ class State {
 
   calcularManhDist(goalState) {
     let dm = 0;
-
     goalState.state.forEach(gs => {
       let idx = this.state.findIndex(s => s.value === gs.value);
+
       if (this.state[idx].value !== -1) {
         let dmi = Math.abs(gs.coords.x - this.state[idx].coords.x) + Math.abs(gs.coords.y - this.state[idx].coords.y);
         dm += dmi;
@@ -71,20 +77,44 @@ class State {
     return dm;
   }
 
+  incrementarDepthLevel(depthLevel) {
+    this.depthLevel = depthLevel +1;
+  }
+
+  setPredecessor(stateUUID) {
+    this.predecessor = stateUUID;
+  }
+
+  calcularHeuristicFunction(method, goalState) {
+    if (method === "firstBetter") {
+      this.f = this.calcularManhDist(goalState);
+    }
+    if (method === "aAstherisk") {
+      this.f = this.depthLevel + this.calcularManhDist(goalState);
+    }
+  }
+
   get stateValues() {
     return this.state.map(st => st.value);
   }
 }
 
 class Game {
-  constructor (initialState, goalState, emptyPiecePos = 8) {
+  constructor (gameChosen, heuristicMethod, initialState, goalState) {
+    this.gameChosen = gameChosen;
+    this.heuristicMethod = heuristicMethod;
     this.state = initialState;
     this.goalState = goalState;
-    this.emptyPiece = this.state.getPiece(emptyPiecePos-1);
+    this.emptyPiece = this.setEmptyPiece();
+    this.openListStates = {};
+    this.closedListStates = {};
     this.exploredPaths = [];
+    window.game = this;
 
-    let stateHash = this.hashPath(this.state.stateValues);
-    this.addPath(stateHash);
+    let stateHash = this.hashPath(initialState.stateValues);
+    this.addExploredPath(stateHash);
+    this.initOpenListStates(initialState);
+    this.initClosedListStates();
   }
 
   get Moves() {
@@ -97,41 +127,52 @@ class Game {
   }
 
   generarSiguientesEstados() {
+    return this.generarSiguientesEstadosByMethod(this.heuristicMethod);
+  }
+
+  generarSiguientesEstadosByMethod(heuristicMethod) {
     let nextStates = [];
-    let manhDists = [];
 
     const emptyPieceAvailMoves = this.emptyPiece.availableMoves;
     const gs = this.goalState;
+
+    let fValues = [];
 
     let moveOffset;
     const emptyPiecePos = this.emptyPiece.pos;
 
     emptyPieceAvailMoves.forEach((_, moveIdx) => {
       let newState = new State(this.state.stateValues);
-      
+
       moveOffset = this.Moves[emptyPieceAvailMoves[moveIdx]];
       
       newState.getPiece(emptyPiecePos).value = newState.getPiece(emptyPiecePos + moveOffset).value;
       newState.getPiece(emptyPiecePos + moveOffset).value = -1;
+      newState.incrementarDepthLevel(this.state.depthLevel);
+      newState.calcularHeuristicFunction(heuristicMethod, gs);
+      newState.setPredecessor(this.state.uuid);
 
-      const stateHash = this.hashPath(newState.stateValues);
+      let stateHash = this.hashPath(newState.stateValues);
 
       if (!this.pathExists(stateHash)) {
-        this.addPath(stateHash);
+        this.addExploredPath(stateHash);
         nextStates.push(newState);
-        manhDists.push({ idx: manhDists.length, value: newState.calcularManhDist(gs) });
+        fValues.push({ idx: fValues.length, value: newState.f });
       }
     });
 
-    const minDm = Math.min(...manhDists.map(dm => dm.value));
+    const minFValue = Math.min(...fValues.map(f => f.value));
 
-    const dmIdxs = manhDists.filter(dm => dm.value === minDm).map(dm => dm.idx);
+    const fValuesIdxs = fValues.filter(f => f.value === minFValue).map(f => f.idx);
 
     nextStates.forEach((st, idx) => {
-      if (dmIdxs.includes(idx)) {
+      if (fValuesIdxs.includes(idx)) {
         st.selected = true;
+        this.addStateToClosedList(st.depthLevel);
       }
     });
+
+    this.addStatesToOpenList(nextStates[0].depthLevel, nextStates);
 
     return nextStates;
   }
@@ -145,12 +186,36 @@ class Game {
     return sha256(stateValues);
   }
 
-  addPath(path) {
+  addExploredPath(path) {
     this.exploredPaths.push(path);
   }
 
   pathExists(path) {
     return this.exploredPaths.includes(path);
+  }
+
+  initOpenListStates(initialState) {
+    this.openListStates[`Step #1`] = [initialState];
+  }
+
+  initClosedListStates() {
+    this.closedListStates[`Step #1`] = [];
+  }
+
+  addStatesToOpenList(step, states) {
+    const filteredList = this.openListStates[`Step #${step-1}`].filter(state => !state.lastSelected);
+    const newStatesUpdated = states.map((state) => {
+      if (state.selected) {
+        state.lastSelected = true;
+      }
+      return state;
+    })
+    this.openListStates[`Step #${step}`] = [...filteredList, ...newStatesUpdated];
+  }
+
+  addStateToClosedList(step) {
+    const lastStateSelected = this.openListStates[`Step #${step-1}`].find(state => state.lastSelected);
+    this.closedListStates[`Step #${step}`] = [...this.closedListStates[`Step #${step-1}`], lastStateSelected];
   }
 }
 

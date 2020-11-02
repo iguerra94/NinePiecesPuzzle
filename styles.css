@@ -15,18 +15,288 @@ h1 {
   line-height: 3rem;
 }
 
-.game-container {
+.main-container {
   height: calc(100vh - 6rem);
-  padding: .5rem 1rem;
+  padding: 2rem 1rem;
+  margin-top: 1rem;
+  border-top: 2px dashed #aaa;
+}
+
+.main-container > .game-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.main-container > .game-setup > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 90%;
+}
+
+.main-container > .game-setup > * > ul {
+  list-style: none;
+
+  display: flex;
+  justify-content: space-around;
+  width: inherit;
+
+  margin-top: 4rem;
+}
+
+.main-container > .game-setup > * > ul > li {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-container > .game-setup > * > ul > li > button {
+  width: 20rem;
+  padding: 3rem;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.main-container > .game-setup > * > ul > li > div.item-clarifications,
+.main-container > .game-setup > .game-setup__second-step > div.heuristic-functions__clarifications {
+  margin-top: 3rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items {
+  margin-top: 3rem;
+
+  display: flex;
+  height: 60%;
+  flex-direction: column;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .step-clarifications {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .step-clarifications > .step-clarifications__title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .step-clarifications > span {
+  margin-bottom: .4rem;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li {
+  width: 100%;
+  height: 50%;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li > .state-preview > span {
+  text-align: center;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li > div > button {
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  font-size: .9rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li > div > label {
+  font-size: .9rem;
+  margin-bottom: .4rem;
+}
+
+.main-container > .game-setup > .game-setup__third-step > .game-setup__third-step-items > li > div > input {
+  padding: .5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.main-container > .game-setup > * > .actions {
+  padding: 1rem 0;
+  margin-top: 2rem;
+  text-align: end;
+  border-top: 2px dashed #333;
+  width: 90%;
+  position: fixed;
+  bottom: 0;
+}
+
+.main-container > .game-setup > * > .actions > button {
+  padding: 1rem 1.5rem;
+  font-size: .9rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.main-container > .game-setup > .game-setup__second-step > div.heuristic-functions__clarifications > p.heuristic-functions__clarifications-title {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.main-container > .game-setup > * > ul > li > div.item-clarifications > span:not(:last-child),
+.main-container > .game-setup > .game-setup__second-step > div.heuristic-functions__clarifications > span:not(:last-child) {
+  margin-bottom: .4rem;
+}
+
+.simple-problem-state-images {
+  margin-top: 4rem;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.simple-problem-state-image-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.simple-problem-state-image {
+  margin-top: .4rem;
+  width: 8rem;
+}
+
+.game-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
+.game-container-zone__wrapper {
+  display: flex;
+  width: 100%;
+
+  justify-content: space-evenly;
+}
+
+.game-container-zone__current-state {
+  flex: 1;
+  border-right: 2px solid #333;
+}
+
+.game-container-zone__open-closed-lists {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.game-container-zone__row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.game-container-zone__row-flex-1 {
+  flex: 1;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  width: 40%;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.flex-column > label {
+  font-size: .9rem;
+}
+
+.flex-column > input[type="text"] {
+  margin-top: .3rem;
+  padding: .5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.list-label {
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-right: 1rem;
+}
+
+.flex-row > button {
+  font-size: 1rem;
+  padding: .7rem;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #3483fa;
+  color: white;
+  transition: background-color .3s ease-in-out;
+  will-change: background-color;
+}
+
+.flex-row > button:not(.btn-show__list-modal) {
+  width: 6rem;
+}
+
+.flex-row > button.btn-show__list-modal {
+  width: 100%;
+}
+
 .puzzle {
   width: 12rem;
   height: 12rem;
-  margin: 2rem auto;
+  margin: 1rem auto;
+
+  border: 1px solid #333;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  position: relative;
+}
+
+.puzzle-small {
+  width: 8rem;
+  height: 8rem;
+  margin: 1rem auto;
+  margin-bottom: 0;
 
   border: 1px solid #333;
 
@@ -45,7 +315,15 @@ h1 {
   border: 1px solid #333;
 }
 
-.dm-right {
+.pieza-small {
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #333;
+}
+
+.hf-right {
   position: absolute;
   right: -80px;
   height: 100%;
@@ -56,7 +334,7 @@ h1 {
   align-items: center;
 }
 
-.dm-top {
+.hf-top {
   position: absolute;
   top: -40px;
   width: 100%;
@@ -67,7 +345,11 @@ h1 {
   justify-content: center;
 }
 
-.game-container > .actions > button {
+.game-container > .game-container-zone__wrapper > .game-container-zone__current-state > .actions {
+  text-align: center;
+}
+
+.game-container > .game-container-zone__wrapper > .game-container-zone__current-state > .actions > button {
   font-size: 1rem;
   padding: .8rem 1.2rem;
   border: none;
@@ -81,18 +363,16 @@ h1 {
   will-change: background-color;
 }
 
-.game-container > .actions > button:hover {
+.game-container > .game-container-zone__wrapper > .game-container-zone__current-state > .actions > button:hover {
   background-color: #2968c8;
 }
 
 .game-container > .possibleNextStates {
-  margin-top: 2rem;
+  margin-top: 4rem;
   border: 1px dashed #333;
   width: 100%;
   flex: 1;
-
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,7 +409,7 @@ h1 {
 
 .possible-next-states__text {
   position: absolute;
-  top: -6%;
+  top: -1.5rem;
   font-size: .9rem;
   color: #333;
 }
@@ -151,4 +431,107 @@ h1 {
 
   display: flex;
   justify-content: flex-end;
+}
+
+.list-modal__wrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, .7);
+}
+
+.list-modal__container {
+  width: 60%;
+  height: 60%;
+  border-radius: .5rem;
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.list-modal__header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+}
+
+.list-modal__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.btn-close__list-modal {
+  flex: 1;
+  text-align: end;
+}
+
+.btn-close__list-modal > * {
+  cursor: pointer;
+}
+
+.list-modal__content {
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.list-modal__content-items {
+  height: 100%;
+  overflow: scroll;
+  position: relative;
+}
+
+.list-modal__content-item-row:first-child {
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+}
+
+.list-modal__content-item-row {
+  display: flex;
+  align-items: center;
+  height: 6rem;
+}
+
+.list-modal__content-item-row:nth-child(2) {
+  margin-top: 2.5rem;
+}
+
+.list-header {
+  background-color: #333;
+  color: #eee;
+  width: calc(60% - 3rem);
+  position: fixed;
+}
+
+.list-modal__content-item-column {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+  flex-direction: column;
+}
+
+.list-modal__content-item-column.column-header:not(:last-child) {
+  border-right: 1px solid #eee;
+}
+
+.list-modal__content-item-column:not(:last-child) {
+  border-right: 1px solid #333;
+}
+
+.column-fixed-size {
+  width: 6rem;
+}
+
+.column-flex-1 {
+  flex: 1;
 }

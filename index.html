@@ -1,28 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solución Puzzle nueve Piezas</title>
   <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"></link>
 </head>
 <body>
-  <h1>Puzzle Nueve Piezas</h1>
-  <div class="game-container">
-    <div id="curstatePuzzle" class="puzzle">
-    </div>
-
-    <div class="actions">
-      <button id="btnNextAction">Siguiente acción</button>
-    </div>
-
-    <div id="possibleNextStates" class="possibleNextStates">
-      <div class="possible-next-states__text">
-        Siguientes estados posibles
+  <h1>Puzzle de Nueve Piezas</h1>
+  <div class="main-container">
+    <div id="game-setup" class="game-setup">
+      <div id="game-setup__first-step" class="game-setup__first-step">
+        <h2>Eleccion del problema</h2>
+        <ul class="game-setup__first-step-items">
+          <li>
+            <button id="btn-choose-simple-resolution-problem">Problema de resolución simple</button>
+            <div class="item-clarifications">
+              <span>- Estado inicial y objetivo establecidos previamente</span>
+              <span>- La resolución se da en pocos pasos desde el estado inicial</span>
+            </div>
+            <div class="simple-problem-state-images">
+              <div class="simple-problem-state-image-wrapper">
+                <span>Estado inicial</span>
+                <img class="simple-problem-state-image" src="images/initial-state.png" alt="Initial state" />
+              </div>
+              <div class="simple-problem-state-image-wrapper">
+                <span>Estado objetivo</span>
+                <img class="simple-problem-state-image" src="images/goal-state.png" alt="Goal state" />
+              </div>
+            </div>
+          </li>
+          <li>
+            <button id="btn-choose-custom-problem">Problema personalizado</button>
+            <div class="item-clarifications">
+              <span>- El usuario puede fijar el estado inicial y el estado objetivo</span>
+            </div>
+          </li>
+        </ul>
+        <div class="actions">
+          <button id="btn-choose-problem" class="action">Siguiente</button>
+        </div>
+      </div>
+      <div id="game-setup__second-step" class="game-setup__second-step" style="display: none;">
+        <h2>Metodo de resolución del problema</h2>
+        <ul class="game-setup__second-step-items">
+          <li>
+            <button id="btn-choose-first-better-res-method">Primero el mejor</button>
+            <div class="item-clarifications">
+              <span>- <strong>Funcion heuristica (f):</strong> f = h</span>
+            </div>
+          </li>
+          <li>
+            <button id="btn-choose-a-astherisk-res-method">A*</button>
+            <div class="item-clarifications">
+              <span>- <strong>Funcion heuristica (f):</strong> f = g + h</span>
+            </div>
+          </li>
+        </ul>
+        <div class="heuristic-functions__clarifications">
+          <p class="heuristic-functions__clarifications-title">
+            Aclaración sobre los parametros
+          </p>
+          <span>- <strong>g:</strong> Nivel de profundidad del nodo</span>
+          <span>- <strong>h:</strong> Distancia al nodo objetivo (Distancia manhattan)</span>
+        </div>
+        <div class="actions">
+          <button id="btn-back-to-choose-problem" class="action">Volver</button>
+          <button id="btn-choose-resolution-method" class="action">Siguiente</button>
+        </div>
+      </div>
+      <div id="game-setup__third-step" class="game-setup__third-step" style="display: none;">
+        <h2>Problema personalizado - Configuración inicial</h2>
+        <ul class="game-setup__third-step-items">
+          <li>
+            <div class="state-setup">
+              <label>Estado inicial</label>
+              <input type="text" placeholder="Ej: 1,2,3,4,5,6,8,-1" id="custom-problem-initial-state">
+              <button id="btn-custom-problem-set-initial-state">Establecer estado inicial</button>
+            </div>
+            <div class="state-preview">
+              <span>Vista previa del estado inicial</span>
+              <div id="customProblemInitialStatePuzzle" class="puzzle-small">
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="state-setup">
+              <label>Estado objetivo</label>
+              <input type="text" placeholder="Ej: 1,2,3,4,5,6,8,-1" id="custom-problem-goal-state">
+              <button id="btn-custom-problem-set-goal-state">Establecer estado objetivo</button>
+            </div>
+            <div class="state-preview">
+              <span>Vista previa del estado objetivo</span>
+              <div id="customProblemGoalStatePuzzle" class="puzzle-small">
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="step-clarifications">
+          <p class="step-clarifications__title">Aclaraciones</p>
+          <span>- Solamente se permiten numeros entre el 1 y el 8 y el -1, en cada uno de los estados. Cualquier otro valor no sera permitido y generará un error</span>
+          <span>- En cada estado, la posicion que contenga el numero -1 sera el lugar donde habra un espacio vacio en el tablero</span>
+        </div>
+        <div class="actions">
+          <button id="btn-back-to-choose-resolution-method" class="action">Volver</button>
+          <button id="btn-start-game-custom-problem" class="action">Iniciar juego</button>
+        </div>
       </div>
     </div>
+    <div id="game-container" class="game-container" style="display: none;">
+      <div class="game-container-zone__wrapper">
+        <div class="game-container-zone__current-state">
+          <div id="curstatePuzzle" class="puzzle">
+          </div>
 
-    <script src="index.js" type="module"></script>
+          <div class="actions">
+            <button id="btnNextAction">Siguiente acción</button>
+          </div>
+        </div>
+        <div class="game-container-zone__open-closed-lists">
+          <div class="game-container-zone__row game-container-zone__row-flex-1">
+            <div class="flex-row">
+              <span class="list-label">Lista abierta</span>
+            </div>
+            <div class="flex-column">
+              <label for="">Último en ingresar</label>
+              <input id="open-list__last-state-entered" type="text" disabled>
+            </div>
+          </div>
+          <div class="game-container-zone__row game-container-zone__row-flex-1">
+            <div class="flex-row">
+              <span class="list-label">Lista cerrada</span>
+            </div>
+            <div class="flex-column">
+              <label for="">Último en ingresar</label>
+              <input id="closed-list__last-state-entered" type="text" disabled>
+            </div>
+          </div>
+          <div class="game-container-zone__row">
+            <div class="flex-row">
+              <button id="btn-show__list-modal" class="btn-show__list-modal">Ver listas</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div id="possibleNextStates" class="possibleNextStates">
+        <div class="possible-next-states__text">
+          Siguientes estados posibles
+        </div>
+      </div>
+
+      <div id="list-modal__wrapper" class="list-modal__wrapper" style="display: none;">
+        <div id="list-modal__container" class="list-modal__container">
+          <div class="list-modal__header">
+            <div id="list-modal__title" class="list-modal__title">
+              Listas abierta y cerrada
+            </div>
+            <div id="btn-close__list-modal" class="btn-close__list-modal" >
+              <i class="fas fa-times fa-lg"></i>
+            </div>
+          </div>
+          <div class="list-modal__content">
+            <div id="list-modal__content-items" class="list-modal__content-items">
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <script src="index.js" type="module"></script>
+    </div>
   </div>
 </body>
 </html>
