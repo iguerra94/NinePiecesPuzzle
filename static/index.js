@@ -245,7 +245,8 @@ $btnShowListModal.addEventListener('click', () => {
             listModalContentItemsContentElementHTML += `
               <div class="list-modal__content-item-column column-flex-1" style="border-bottom: 1px solid #333;">
                 <span style="font-size: .8rem;">uuid: ${item.uuid}</span>
-                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span> <br>
+                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span>
+                <span style="font-size: .8rem;">f: ${item.f}</span> <br>
                 ${(item.dm === 0) ? 
                     `<span style='color: #f33;'>[${item.stateValues}] => OBJETIVO` :
                     `<span>[${item.stateValues}]`
@@ -256,8 +257,9 @@ $btnShowListModal.addEventListener('click', () => {
             listModalContentItemsContentElementHTML += `
               <div class="list-modal__content-item-column column-flex-1">
                 <span style="font-size: .8rem;">uuid: ${item.uuid}</span>
-                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span> <br>
-                ${(item.dm === 0) ? 
+                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span>
+                <span style="font-size: .8rem;">f: ${item.f}</span> <br>
+              ${(item.dm === 0) ? 
                   `<span style='color: #f33;'>[${item.stateValues}] => OBJETIVO` :
                   `<span>[${item.stateValues}]`
                 }
@@ -274,7 +276,8 @@ $btnShowListModal.addEventListener('click', () => {
               listModalContentItemsContentElementHTML += `
                 <div class="list-modal__content-item-column column-flex-1" style="border-bottom: 1px solid #333;">
                   <span style="font-size: .8rem;">uuid: ${closedListItemsValues[i][idx].uuid}</span>
-                  <span style="font-size: .8rem;">predec: ${(closedListItemsValues[i][idx].predecessor) ? closedListItemsValues[i][idx].predecessor : "-"}</span> <br>
+                  <span style="font-size: .8rem;">predec: ${(closedListItemsValues[i][idx].predecessor) ? closedListItemsValues[i][idx].predecessor : "-"}</span>
+                  <span style="font-size: .8rem;">f: ${closedListItemsValues[i][idx].f}</span> <br>
                   [${closedListItemsValues[i][idx].stateValues}]
                 </div>
               `;  
@@ -286,7 +289,8 @@ $btnShowListModal.addEventListener('click', () => {
               listModalContentItemsContentElementHTML += `
                 <div class="list-modal__content-item-column column-flex-1">
                   <span style="font-size: .8rem;">uuid: ${closedListItemsValues[i][idx].uuid}</span>
-                  <span style="font-size: .8rem;">predec: ${(closedListItemsValues[i][idx].predecessor) ? closedListItemsValues[i][idx].predecessor : "-"}</span> <br>
+                  <span style="font-size: .8rem;">predec: ${(closedListItemsValues[i][idx].predecessor) ? closedListItemsValues[i][idx].predecessor : "-"}</span>
+                  <span style="font-size: .8rem;">f: ${closedListItemsValues[i][idx].f}</span> <br>
                   [${closedListItemsValues[i][idx].stateValues}]
                 </div>
               `;  
@@ -329,7 +333,8 @@ $btnShowListModal.addEventListener('click', () => {
               listModalContentItemsContentElementHTML += `
                 <div class="list-modal__content-item-column column-flex-1" style="border-bottom: 1px solid #333;">
                   <span style="font-size: .8rem;">uuid: ${openListItemsValues[i][idx].uuid}</span>
-                  <span style="font-size: .8rem;">predec: ${(openListItemsValues[i][idx].predecessor) ? openListItemsValues[i][idx].predecessor : "-"}</span> <br>
+                  <span style="font-size: .8rem;">predec: ${(openListItemsValues[i][idx].predecessor) ? openListItemsValues[i][idx].predecessor : "-"}</span>
+                  <span style="font-size: .8rem;">f: ${openListItemsValues[i][idx].f}</span> <br>
                   ${(openListItemsValues[i][idx].dm === 0) ?
                     `<span style='color: #f33;'>[${openListItemsValues[i][idx].stateValues}] => OBJETIVO` :
                     `<span>[${openListItemsValues[i][idx].stateValues}]`
@@ -344,7 +349,8 @@ $btnShowListModal.addEventListener('click', () => {
               listModalContentItemsContentElementHTML += `
                 <div class="list-modal__content-item-column column-flex-1">
                   <span style="font-size: .8rem;">uuid: ${openListItemsValues[i][idx].uuid}</span>
-                  <span style="font-size: .8rem;">predec: ${(openListItemsValues[i][idx].predecessor) ? openListItemsValues[i][idx].predecessor : "-"}</span> <br>
+                  <span style="font-size: .8rem;">predec: ${(openListItemsValues[i][idx].predecessor) ? openListItemsValues[i][idx].predecessor : "-"}</span>
+                  <span style="font-size: .8rem;">f: ${openListItemsValues[i][idx].f}</span> <br>
                   ${(openListItemsValues[i][idx].dm === 0) ?
                     `<span style='color: #f33;'>[${openListItemsValues[i][idx].stateValues}] => OBJETIVO` :
                     `<span>[${openListItemsValues[i][idx].stateValues}]`
@@ -363,16 +369,18 @@ $btnShowListModal.addEventListener('click', () => {
           if (idx < closedListItemsValues[i].length -1) {
             listModalContentItemsContentElementHTML += `
               <div class="list-modal__content-item-column column-flex-1" style="border-bottom: 1px solid #333;">
-                <span style="font-size: .8rem;">uuid: ${item.uuid}</span>
-                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span> <br>
-                [${item.stateValues}]
+              <span style="font-size: .8rem;">uuid: ${item.uuid}</span>
+              <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span>
+              <span style="font-size: .8rem;">f: ${item.f}</span> <br>
+              [${item.stateValues}]
               </div>
             `;
           } else {
             listModalContentItemsContentElementHTML += `
               <div class="list-modal__content-item-column column-flex-1">
                 <span style="font-size: .8rem;">uuid: ${item.uuid}</span>
-                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span> <br>
+                <span style="font-size: .8rem;">predec: ${(item.predecessor) ? item.predecessor : "-"}</span>
+                <span style="font-size: .8rem;">f: ${item.f}</span> <br>
                 [${item.stateValues}]
               </div>
             `;
